@@ -16,6 +16,9 @@ p = zeros(m, 1);
 %
 
 
+z = sum(theta.*X')';
+p = sigmoid(z) >= 0.5;
+  
 
 
 
