@@ -62,25 +62,88 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%ysize = size(y)
 
+%Xsize = size(X)
+a1 = [ones(m,1) X];
+a1size = size(a1);
 
+z2 = a1*Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m,1) a2];
+%a2size = size(a2)
 
+z3 = a2*Theta2';
+a3 = sigmoid(z3); %output layer
+%a3size = size(a3)
+h = a3;
 
+Y = zeros(num_labels,1)';
 
+Y(y(1))=1;
 
+M = m;
+for i = 2:m
+    y0 = zeros(num_labels,1)';
+    y0(y(i))=1;
+    Y = [Y;y0];    
+end
 
+%Ysize = size(Y)
 
+j1 = sum(sum(-Y.*log(h)-(1-Y).*log(1-h)))/m;
 
+first = 0;
+for r=1:size(Theta1,1)
+    for c=2:size(Theta1,2)
+        val1 = Theta1(r,c);
+        res = val1*val1;
+        first = first + res;
+    end
+end
 
+second = 0;
+for r=1:size(Theta2,1)
+    for c=2:size(Theta2,2)
+        val2 = Theta2(r,c);
+        res = val2*val2;
+        second = second + res;
+    end
+end
 
+j2 = (first+second)*lambda/(2*m);
 
-
-
-
-
-
+J = j1 + j2;
 
 % -------------------------------------------------------------
+
+DELTA1 = zeros(size(Theta1));
+DELTA2 = zeros(size(Theta2));
+
+for i = 1:m
+    A1 = a1(i,:)';
+    A1Size=size(A1);
+    Z2 = Theta1*A1;
+    A2 = sigmoid(Z2);
+    A2 = [1;A2];
+    Z3 = Theta2*A2;
+    A3 = sigmoid(Z3);
+    YK = Y(i,:)';
+    delta3 = A3 - YK;
+    DELTA2 = DELTA2 + delta3*A2';
+
+    delta2 = (Theta2'*delta3);
+    delta2 = delta2(2:end);
+    delta2 = delta2.*sigmoidGradient(Z2);
+    DELTA1 = DELTA1 + delta2*A1';
+end
+
+Theta1_grad = DELTA1/m; 
+Theta2_grad = DELTA2/m; 
+
+Theta2_grad(:, 2 : end) = Theta2_grad(:, 2 : end) + lambda * Theta2(:, 2 : end) / m;
+Theta1_grad(:, 2 : end) = Theta1_grad(:, 2 : end) + lambda * Theta1(:, 2 : end) / m;
+
 
 % =========================================================================
 
