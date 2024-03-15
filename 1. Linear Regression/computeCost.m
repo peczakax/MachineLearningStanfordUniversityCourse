@@ -14,7 +14,9 @@ J = 0;
 %               You should set J to the cost.
 
 
-
+hx = X * theta;
+term = hx - y;
+J = dot(term',term)/(2*m);
 
 
 % =========================================================================

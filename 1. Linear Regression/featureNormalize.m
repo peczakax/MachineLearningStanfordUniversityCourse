@@ -26,11 +26,19 @@ sigma = zeros(1, size(X, 2));
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
 
+mu = mean(X);
 
+% mu(1) = mean(X(:,1))
+% mu(2) = mean(X(:,2))
+% mu(3) = mean(X(:,3))
 
+sigma = std(X);
 
+% sigma(1) = std(X(:,1))
+% sigma(2) = std(X(:,2))
+% sigma(3) = std(X(:,3))
 
-
+X_norm = (X .- mu)./sigma;
 
 
 
