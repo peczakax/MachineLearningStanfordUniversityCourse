@@ -16,6 +16,9 @@ sim = 0;
 %
 %
 
+v = x1-x2;
+v = dot(v,v);
+sim = exp(-v/(2*sigma*sigma));
 
 
 
