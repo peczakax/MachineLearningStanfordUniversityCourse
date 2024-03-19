@@ -27,6 +27,25 @@ centroids = zeros(K, n);
 %
 
 
+    numClosestExamples = zeros(K);
+    for i = 1:length(idx)
+        for k = 1:K
+            if idx(i) == k
+                numClosestExamples(k) = numClosestExamples(k) + 1;            
+            endif
+        end
+    end
+
+    newCentroids = zeros(K,n);
+    for i = 1:length(idx)
+        k = idx(i);
+        newCentroids(k,:) = newCentroids(k,:) + X(i,:);
+    end
+
+    for k = 1:K
+        centroids(k,:) = newCentroids(k,:) / numClosestExamples(k);
+    end;
+    
 
 
 
